@@ -25,20 +25,21 @@ module.exports = function () {
     var apiURL = _ref2.apiURL,
         contentType = _ref2.contentType,
         jwtToken = _ref2.jwtToken,
-        queryLimit = _ref2.queryLimit;
-    var apiEndpoint, fetchRequestConfig, documents;
+        queryLimit = _ref2.queryLimit,
+        reporter = _ref2.reporter;
+    var apiBase, apiEndpoint, fetchRequestConfig, documents;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            console.time('Fetch Strapi data');
-            console.log('Starting to fetch data from Strapi (' + (0, _pluralize2.default)(contentType) + ')');
-
             // Define API endpoint.
-            apiEndpoint = apiURL + '/' + (0, _pluralize2.default)(contentType) + '?_limit=' + queryLimit;
+            apiBase = apiURL + '/' + (0, _pluralize2.default)(contentType);
+            apiEndpoint = apiBase + '?_limit=' + queryLimit;
+
+
+            reporter.info('Starting to fetch data from Strapi - ' + apiBase);
 
             // Set authorization token
-
             fetchRequestConfig = {};
 
             if (jwtToken !== null) {
@@ -53,17 +54,11 @@ module.exports = function () {
 
           case 7:
             documents = _context.sent;
-
-
-            // Query all documents from client.
-            console.timeEnd('Fetch Strapi data');
-
-            // Map and clean data.
             return _context.abrupt('return', documents.data.map(function (item) {
               return clean(item);
             }));
 
-          case 10:
+          case 9:
           case 'end':
             return _context.stop();
         }

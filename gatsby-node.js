@@ -34,7 +34,8 @@ exports.sourceNodes = function () {
   var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(_ref2, _ref3) {
     var store = _ref2.store,
         boundActionCreators = _ref2.boundActionCreators,
-        cache = _ref2.cache;
+        cache = _ref2.cache,
+        reporter = _ref2.reporter;
     var _ref3$apiURL = _ref3.apiURL,
         apiURL = _ref3$apiURL === undefined ? 'http://localhost:1337' : _ref3$apiURL,
         _ref3$contentTypes = _ref3.contentTypes,
@@ -43,7 +44,7 @@ exports.sourceNodes = function () {
         loginData = _ref3$loginData === undefined ? {} : _ref3$loginData,
         _ref3$queryLimit = _ref3.queryLimit,
         queryLimit = _ref3$queryLimit === undefined ? 100 : _ref3$queryLimit;
-    var createNode, touchNode, jwtToken, loginEndpoint, loginResponse, promises, entities;
+    var createNode, touchNode, jwtToken, authenticationActivity, loginEndpoint, loginResponse, fetchActivity, promises, entities;
     return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -58,8 +59,9 @@ exports.sourceNodes = function () {
               break;
             }
 
-            console.time('Authenticate Strapi user');
-            console.log('Authenticate Strapi user');
+            authenticationActivity = reporter.activityTimer('Authenticate Strapi User');
+
+            authenticationActivity.start();
 
             // Define API endpoint.
             loginEndpoint = apiURL + '/auth/local';
@@ -84,13 +86,16 @@ exports.sourceNodes = function () {
             _context.prev = 13;
             _context.t0 = _context['catch'](6);
 
-            console.error('Strapi authentication error: ' + _context.t0);
+            reporter.panic('Strapi authentication error: ' + _context.t0);
 
           case 16:
 
-            console.timeEnd('Authenticate Strapi user');
+            authenticationActivity.end();
 
           case 17:
+            fetchActivity = reporter.activityTimer('Fetched Strapi Data');
+
+            fetchActivity.start();
 
             // Generate a list of promises based on the `contentTypes` option.
             promises = contentTypes.map(function (contentType) {
@@ -98,18 +103,19 @@ exports.sourceNodes = function () {
                 apiURL: apiURL,
                 contentType: contentType,
                 jwtToken: jwtToken,
-                queryLimit: queryLimit
+                queryLimit: queryLimit,
+                reporter: reporter
               });
             });
 
             // Execute the promises.
 
-            _context.next = 20;
+            _context.next = 22;
             return _promise2.default.all(promises);
 
-          case 20:
+          case 22:
             entities = _context.sent;
-            _context.next = 23;
+            _context.next = 25;
             return _normalize2.default.downloadMediaFiles({
               entities: entities,
               apiURL: apiURL,
@@ -120,7 +126,7 @@ exports.sourceNodes = function () {
               jwtToken: jwtToken
             });
 
-          case 23:
+          case 25:
             entities = _context.sent;
 
 
@@ -132,7 +138,9 @@ exports.sourceNodes = function () {
               });
             });
 
-          case 25:
+            fetchActivity.end();
+
+          case 28:
           case 'end':
             return _context.stop();
         }
