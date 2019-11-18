@@ -48,7 +48,7 @@ const extractFields = async (
 
           await cache.set(mediaDataCacheKey, {
             fileNodeID,
-            modified: item.updatedAt,
+            updatedAt: item.updatedAt,
           })
         }
       } catch (e) {
@@ -57,11 +57,11 @@ const extractFields = async (
     }
 
     if (fileNodeID) {
-      if (key === 'localFile') {
-        item[`${key}___NODE`] = fileNodeID
+      if (key !== 'localFile') {
+        return fileNodeID
       }
 
-      return fileNodeID
+      item.localFile___NODE = fileNodeID
     }
   } else if (Array.isArray(item)) {
     await Promise.all(

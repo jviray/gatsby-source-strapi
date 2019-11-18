@@ -40,7 +40,7 @@ var extractFields = function () {
         switch (_context2.prev = _context2.next) {
           case 0:
             if (!(item && item.hasOwnProperty('mime'))) {
-              _context2.next = 26;
+              _context2.next = 27;
               break;
             }
 
@@ -96,7 +96,7 @@ var extractFields = function () {
             _context2.next = 17;
             return cache.set(mediaDataCacheKey, {
               fileNodeID: fileNodeID,
-              modified: item.updatedAt
+              updatedAt: item.updatedAt
             });
 
           case 17:
@@ -109,27 +109,32 @@ var extractFields = function () {
 
           case 21:
             if (!fileNodeID) {
-              _context2.next = 24;
+              _context2.next = 25;
               break;
             }
 
-            if (key === 'localFile') {
-              item[key + '___NODE'] = fileNodeID;
+            if (!(key !== 'localFile')) {
+              _context2.next = 24;
+              break;
             }
 
             return _context2.abrupt('return', fileNodeID);
 
           case 24:
-            _context2.next = 61;
+
+            item.localFile___NODE = fileNodeID;
+
+          case 25:
+            _context2.next = 62;
             break;
 
-          case 26:
+          case 27:
             if (!Array.isArray(item)) {
-              _context2.next = 31;
+              _context2.next = 32;
               break;
             }
 
-            _context2.next = 29;
+            _context2.next = 30;
             return _promise2.default.all(item.map(function () {
               var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(f) {
                 return _regenerator2.default.wrap(function _callee$(_context) {
@@ -151,34 +156,34 @@ var extractFields = function () {
               };
             }()));
 
-          case 29:
-            _context2.next = 61;
+          case 30:
+            _context2.next = 62;
             break;
 
-          case 31:
+          case 32:
             if (!(item && (typeof item === 'undefined' ? 'undefined' : (0, _typeof3.default)(item)) === 'object')) {
-              _context2.next = 61;
+              _context2.next = 62;
               break;
             }
 
             _iteratorNormalCompletion = true;
             _didIteratorError = false;
             _iteratorError = undefined;
-            _context2.prev = 35;
+            _context2.prev = 36;
             _iterator = (0, _getIterator3.default)((0, _keys2.default)(item));
 
-          case 37:
+          case 38:
             if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-              _context2.next = 47;
+              _context2.next = 48;
               break;
             }
 
             _key = _step.value;
             field = item[_key];
-            _context2.next = 42;
+            _context2.next = 43;
             return extractFields(apiURL, store, cache, createNode, createNodeId, touchNode, auth, field, _key);
 
-          case 42:
+          case 43:
             _fileNodeID = _context2.sent;
 
 
@@ -186,51 +191,51 @@ var extractFields = function () {
               item[_key + '___NODE'] = _fileNodeID;
             }
 
-          case 44:
+          case 45:
             _iteratorNormalCompletion = true;
-            _context2.next = 37;
+            _context2.next = 38;
             break;
 
-          case 47:
-            _context2.next = 53;
+          case 48:
+            _context2.next = 54;
             break;
 
-          case 49:
-            _context2.prev = 49;
-            _context2.t1 = _context2['catch'](35);
+          case 50:
+            _context2.prev = 50;
+            _context2.t1 = _context2['catch'](36);
             _didIteratorError = true;
             _iteratorError = _context2.t1;
 
-          case 53:
-            _context2.prev = 53;
+          case 54:
             _context2.prev = 54;
+            _context2.prev = 55;
 
             if (!_iteratorNormalCompletion && _iterator.return) {
               _iterator.return();
             }
 
-          case 56:
-            _context2.prev = 56;
+          case 57:
+            _context2.prev = 57;
 
             if (!_didIteratorError) {
-              _context2.next = 59;
+              _context2.next = 60;
               break;
             }
 
             throw _iteratorError;
 
-          case 59:
-            return _context2.finish(56);
-
           case 60:
-            return _context2.finish(53);
+            return _context2.finish(57);
 
           case 61:
+            return _context2.finish(54);
+
+          case 62:
           case 'end':
             return _context2.stop();
         }
       }
-    }, _callee2, undefined, [[8, 19], [35, 49, 53, 61], [54,, 56, 60]]);
+    }, _callee2, undefined, [[8, 19], [36, 50, 54, 62], [55,, 57, 61]]);
   }));
 
   return function extractFields(_x, _x2, _x3, _x4, _x5, _x6, _x7, _x8) {
